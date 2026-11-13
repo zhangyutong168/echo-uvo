@@ -20,20 +20,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Type check
-        run: npx tsc --noEmit
-
-      - name: Lint
-        run: npm run lint
-
       - name: Download embedding model (build-time, not committed)
         run: npm run fetch-model
 
       - name: Build worker bundle
         run: npm run build:worker
 
-      - name: Build
+      - name: Build (generates .next/types for full type check)
         run: npm run build
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
 
       - name: Clustering eval (ARI / purity / silhouette / triage)
         run: npm run eval
