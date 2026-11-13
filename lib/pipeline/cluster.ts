@@ -137,7 +137,7 @@ export function chooseK(n: number, inertias: number[]): number {
       bestK = ks[i];
     }
   }
-  return Math.min(bestK, Math.max(2, Math.min(12, Math.ceil(n / 15))));
+  return Math.min(bestK, Math.max(2, Math.min(12, Math.ceil(n / 8))));
 }
 
 function kmeansPlusPlus(

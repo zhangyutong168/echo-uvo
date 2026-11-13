@@ -73,7 +73,12 @@ export default function AnalyzeClient() {
   const startWorker = useCallback(
     (items: CleanFeedback[], source: string) =>
       new Promise<AnalysisResult>((resolve, reject) => {
-        const worker = new Worker(new URL("../../lib/workers/embed.worker.ts", import.meta.url));
+        // Same-origin prebundled worker (scripts/build-worker.mjs → public/embed.worker.js).
+        // Bypasses Turbopack's classic-worker importScripts bootstrap, whose nested
+        // chunk loading is environment-sensitive; a static file behaves identically
+        // in dev and prod. The bundler-URL fallback keeps type checking happy.
+        const primary = new Worker("/embed.worker.js");
+        const worker = primary;
         workerRef.current = worker;
         worker.addEventListener("message", (ev: MessageEvent) => {
           const msg = ev.data;
@@ -104,7 +109,7 @@ export default function AnalyzeClient() {
   );
 
   const runAnalysis = useCallback(async () => {
-    if (!mapping?.text) {
+    if (parsed && (!mapping?.text)) {
       setError("请先选择评论内容列");
       return;
     }

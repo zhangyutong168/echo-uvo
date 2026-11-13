@@ -67,10 +67,13 @@ function decideAction(input: {
   members: CleanFeedback[];
 }): TriageAction {
   const { share, negativity, members } = input;
-  const positives = members.filter((i) => isPositive(i)).length;
-  const positiveRatio = members.length ? positives / members.length : 0;
 
-  if (positiveRatio >= 0.7) return "praise";
+  // Praise requires a *pure-praise majority*: 4-star feature requests read
+  // "positive" by rating, but they are roadmap input, not amplifiable praise —
+  // counting only positive non-suggestion items keeps the praise bucket
+  // genuinely quotable even when clustering mixes the two.
+  const purePraise = members.filter((i) => isPositive(i) && !SUGGEST_PAT.test(i.text)).length;
+  if (members.length > 0 && purePraise / members.length >= 0.5) return "praise";
   if (share >= 0.08 && negativity >= 0.5) return "fix";
   if (negativity >= 0.3) return "reply";
   return "monitor";
@@ -91,6 +94,7 @@ const NEG_PAT =
   /(崩溃|闪退|卡死|太差|失望|垃圾|骗|退款|难用|bug| Bug |修复|扣费|乱扣|投诉|客服态度|用不了|打不开|登录不了|糟糕|恶心|坑|差评|一星|骗子|卸载)/i;
 const POS_PAT =
   /(喜欢|好用|给力|推荐|五星|太棒|感谢|支持一下|越来越|惊艳|完美|流畅|良心|好评|nice|love|great|awesome|amazing|perfect|best)/i;
+const SUGGEST_PAT = /(希望|建议|如果能|要不要|求|可以加|支持.{0,6}(功能|模式|视图)|自定义)/i;
 
 function clamp(x: number, lo: number, hi: number): number {
   return Math.min(hi, Math.max(lo, x));

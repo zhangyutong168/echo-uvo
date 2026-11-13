@@ -36,6 +36,16 @@ yarn-error.log*
 # vercel
 .vercel
 
+# self-hosted embedding model (downloaded by scripts/fetch-model.mjs at
+# prebuild time; 118MB exceeds GitHub's file limit so it is not committed)
+/public/models/
+# onnxruntime-web wasm runtime (copied from node_modules at postinstall)
+/public/wasm/
+# prebundled embedding worker (scripts/build-worker.mjs at predev/prebuild)
+/public/embed.worker.js
+# eval script's transpile cache
+/eval/.tmp/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

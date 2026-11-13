@@ -4,8 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "predev": "node scripts/build-worker.mjs",
+    "postinstall": "node scripts/copy-wasm.mjs",
+    "prebuild": "node scripts/build-worker.mjs && node scripts/fetch-model.mjs",
     "build": "next build",
     "start": "next start",
+    "build:worker": "node scripts/build-worker.mjs",
+    "fetch-model": "node scripts/fetch-model.mjs",
+    "eval": "node --experimental-strip-types --no-warnings eval/cluster-eval.ts",
     "lint": "eslint"
   },
   "dependencies": {
@@ -22,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "esbuild": "^0.28.2",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "tailwindcss": "4.3.3",
