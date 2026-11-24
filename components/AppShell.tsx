@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { listRuns } from "@/lib/store/idb";
-
+import { listRuns, runDisplayName } from "@/lib/store/idb";
 /**
  * WorkBuddy 式应用壳：浅灰侧栏（Logo / 新建分析 / 导航 / 最近分析）
  * + 纯白内容画布。移动端退化为顶部条。
@@ -13,29 +12,33 @@ import { listRuns } from "@/lib/store/idb";
 const NAV = [
   { href: "/", label: "工作台", icon: MIconHome },
   { href: "/case-study", label: "案例", icon: MIconDoc },
+  { href: "/runs", label: "记录", icon: MIconList },
   { href: "/settings", label: "设置", icon: MIconGear },
 ] as const;
 
 interface RunBrief {
   createdAt: number;
   sourceName: string;
+  displayName?: string;
 }
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [runs, setRuns] = useState<RunBrief[]>([]);
 
-  useEffect(() => {
-    let cancelled = false;
+  const refresh = useCallback(() => {
     listRuns()
-      .then((all) => {
-        if (!cancelled) setRuns(all.slice(0, 5));
-      })
+      .then((all) => setRuns(all.slice(0, 5)))
       .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [pathname]);
+  }, []);
+
+  useEffect(refresh, [refresh, pathname]);
+
+  useEffect(() => {
+    // /runs 页改名/删除/清空后广播，侧栏即时同步
+    window.addEventListener("echo:runs-changed", refresh);
+    return () => window.removeEventListener("echo:runs-changed", refresh);
+  }, [refresh]);
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -80,7 +83,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className="mt-7 flex min-h-0 flex-1 flex-col px-3">
-          <p className="px-3.5 pb-2 text-xs font-medium text-ink-400">分析记录</p>
+          <div className="flex items-baseline justify-between px-3.5 pb-2">
+            <p className="text-xs font-medium text-ink-400">分析记录</p>
+            {runs.length > 0 && (
+              <Link href="/runs" className="text-xs text-brand-600 hover:underline">
+                管理
+              </Link>
+            )}
+          </div>
           <div className="min-h-0 flex-1 space-y-0.5 overflow-y-auto pb-3">
             {runs.length === 0 ? (
               <p className="px-3.5 text-xs leading-relaxed text-ink-400">
@@ -96,9 +106,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   key={r.createdAt}
                   href={`/dashboard/${r.createdAt}`}
                   className="block truncate rounded-xl px-3.5 py-2 text-sm text-ink-600 transition hover:bg-white/60"
-                  title={r.sourceName}
+                  title={runDisplayName(r)}
                 >
-                  {r.sourceName}
+                  {runDisplayName(r)}
                 </Link>
               ))
             )}
@@ -159,6 +169,17 @@ function MIconDoc({ active }: { active: boolean }) {
       <path d="M6 3h9l4 4v14H6z" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M14 3v5h5" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M9 13h6M9 17h4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function MIconList({ active }: { active: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconCls(active)}>
+      <path d="M8 6h12M8 12h12M8 18h12" strokeLinecap="round" />
+      <circle cx="4" cy="6" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="4" cy="12" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="4" cy="18" r="1.2" fill="currentColor" stroke="none" />
     </svg>
   );
 }
