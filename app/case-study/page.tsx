@@ -36,30 +36,30 @@ const STEPS = [
 
 export default function CaseStudyPage() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
-      <Link href="/" className="text-sm text-indigo-600 hover:underline">
+    <main className="mx-auto max-w-3xl px-6 py-12 lg:px-10">
+      <Link href="/" className="text-sm text-brand-600 hover:underline">
         ← 返回首页
       </Link>
-      <p className="mt-8 text-sm font-medium uppercase tracking-widest text-indigo-500">
+      <p className="mt-8 text-sm font-medium uppercase tracking-widest text-brand-600">
         Case Study
       </p>
-      <h1 className="mt-3 text-3xl font-extrabold leading-tight">
+      <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-ink-900">
         一份产品周报的人力成本：
         <br />
         从 4 小时到 15 分钟
       </h1>
-      <p className="mt-4 text-gray-600">
+      <p className="mt-4 text-ink-500">
         以下用内置演示数据（仿真，约 100 条评论）走完 Echo 的完整工作流。
         你也可以用自己产品的反馈 CSV 复现全流程。
       </p>
 
-      <ol className="mt-10 space-y-8">
+      <ol className="mt-10 space-y-6">
         {STEPS.map((s) => (
           <li key={s.n} className="flex gap-5">
-            <span className="text-2xl font-extrabold text-indigo-200">{s.n}</span>
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h2 className="font-semibold">{s.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-gray-600">{s.body}</p>
+            <span className="text-2xl font-extrabold text-brand-200">{s.n}</span>
+            <div className="flex-1 rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_6px_24px_-16px_rgba(16,20,24,0.18)]">
+              <h2 className="font-semibold text-ink-900">{s.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-ink-500">{s.body}</p>
             </div>
           </li>
         ))}
@@ -67,18 +67,18 @@ export default function CaseStudyPage() {
 
       {/* Before / after */}
       <div className="mt-12 grid gap-4 sm:grid-cols-2">
-        <div className="rounded-2xl border border-red-200 bg-red-50 p-6">
-          <h3 className="font-semibold text-red-700">Before · 人工周报</h3>
-          <ul className="mt-3 space-y-1.5 text-sm text-red-600">
+        <div className="rounded-3xl border border-red-100 bg-red-50 p-6">
+          <h3 className="font-semibold text-red-600">Before · 人工周报</h3>
+          <ul className="mt-3 space-y-1.5 text-sm text-red-500">
             <li>⏱ 4 小时/周 人工翻阅</li>
             <li>🎲 主题覆盖凭运气</li>
             <li>🗣 「我觉得用户主要在抱怨…」</li>
             <li>📉 趋势无从判断</li>
           </ul>
         </div>
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
-          <h3 className="font-semibold text-emerald-700">After · Echo 周报</h3>
-          <ul className="mt-3 space-y-1.5 text-sm text-emerald-700">
+        <div className="rounded-3xl border border-brand-100 bg-brand-50 p-6">
+          <h3 className="font-semibold text-brand-700">After · Echo 周报</h3>
+          <ul className="mt-3 space-y-1.5 text-sm text-brand-700">
             <li>⚡ 15 分钟含核对</li>
             <li>🧮 100% 反馈被量化归堆</li>
             <li>📊 「验证码问题 4% 声量、周环比上升」</li>
@@ -90,7 +90,7 @@ export default function CaseStudyPage() {
       <div className="mt-10 text-center">
         <Link
           href="/analyze"
-          className="rounded-xl bg-indigo-600 px-8 py-3.5 font-semibold text-white shadow-lg shadow-indigo-200 hover:bg-indigo-700"
+          className="inline-block rounded-full bg-brand-500 px-8 py-3.5 font-semibold text-white transition hover:bg-brand-600"
         >
           用演示数据跑一遍 →
         </Link>

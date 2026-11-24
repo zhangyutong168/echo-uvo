@@ -26,23 +26,23 @@ export default function ReportClient({ runId }: { runId: number }) {
   if (notFound) {
     return (
       <div className="mx-auto max-w-2xl px-6 py-24 text-center">
-        <p className="text-lg text-gray-600">没有找到这次分析记录。</p>
-        <Link href="/analyze" className="mt-4 inline-block rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white">
+        <p className="text-lg text-ink-500">没有找到这次分析记录。</p>
+        <Link href="/analyze" className="mt-4 inline-block rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white">
           重新分析 →
         </Link>
       </div>
     );
   }
   if (!result || !result.report) {
-    return <div className="mx-auto max-w-2xl px-6 py-24 text-center text-gray-500">加载中…</div>;
+    return <div className="mx-auto max-w-2xl px-6 py-24 text-center text-ink-400">加载中…</div>;
   }
 
   const r: WeeklyReport = result.report;
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10 print:px-0">
+    <div className="mx-auto max-w-3xl px-6 py-10 print:px-0 lg:px-10">
       <div className="flex items-center justify-between print:hidden">
-        <Link href={`/dashboard/${result.createdAt}`} className="text-sm text-indigo-600 hover:underline">
+        <Link href={`/dashboard/${result.createdAt}`} className="text-sm text-brand-600 hover:underline">
           ← 返回 Dashboard
         </Link>
         <div className="flex gap-2">
@@ -53,26 +53,26 @@ export default function ReportClient({ runId }: { runId: number }) {
                 setTimeout(() => setCopied(false), 1500);
               });
             }}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50"
+            className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-ink-600 transition hover:bg-surface"
           >
             {copied ? "已复制 ✓" : "复制 Markdown"}
           </button>
           <button
             onClick={() => window.print()}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+            className="rounded-full bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-600"
           >
             打印 / 导出 PDF
           </button>
         </div>
       </div>
 
-      <article className="mt-8 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm print:border-0 print:shadow-none">
+      <article className="mt-8 rounded-[28px] border border-gray-100 bg-white p-8 shadow-[0_10px_40px_-24px_rgba(16,20,24,0.25)] print:border-0 print:shadow-none">
         <header className="border-b border-gray-100 pb-5">
-          <p className="text-xs font-medium uppercase tracking-wider text-indigo-500">
+          <p className="text-xs font-medium uppercase tracking-wider text-brand-600">
             用户之声周报 · {new Date(result.createdAt).toLocaleDateString("zh-CN")}
           </p>
-          <h1 className="mt-2 text-2xl font-bold leading-snug">{r.headline}</h1>
-          <p className="mt-2 text-sm text-gray-500">
+          <h1 className="mt-2 text-2xl font-bold leading-snug tracking-tight text-ink-900">{r.headline}</h1>
+          <p className="mt-2 text-sm text-ink-400">
             数据源：{result.sourceName} · {result.kpis.total} 条反馈 · 负面占比{" "}
             {Math.round(result.kpis.negativity * 100)}%
             {result.kpis.avgRating ? ` · 平均评分 ${result.kpis.avgRating.toFixed(2)}` : ""} ·
@@ -105,7 +105,7 @@ export default function ReportClient({ runId }: { runId: number }) {
           empty="暂无集中好评。"
         />
 
-        <footer className="mt-8 border-t border-gray-100 pt-4 text-xs text-gray-400">
+        <footer className="mt-8 border-t border-gray-100 pt-4 text-xs text-ink-400">
           由 Echo · 用户之声智能归因台生成 · 打分规则：影响面 × 负面率 × 动量 → 该修 / 该回 / 观察 / 好评
         </footer>
       </article>
@@ -121,15 +121,15 @@ function ReportSection(props: {
 }) {
   return (
     <section className="mt-6">
-      <h2 className="text-base font-semibold">{props.title}</h2>
+      <h2 className="text-base font-semibold text-ink-900">{props.title}</h2>
       {props.items.length === 0 ? (
-        <p className="mt-2 text-sm text-gray-400">{props.empty}</p>
+        <p className="mt-2 text-sm text-ink-400">{props.empty}</p>
       ) : (
         <ul className="mt-2 space-y-2">
           {props.items.map((item, i) => (
             <li
               key={i}
-              className="rounded-lg border border-gray-100 bg-gray-50 p-3 text-sm leading-relaxed text-gray-700"
+              className="rounded-2xl bg-surface p-3.5 text-sm leading-relaxed text-ink-600"
             >
               {renderBold(item)}
             </li>

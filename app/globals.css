@@ -1,26 +1,42 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Design tokens — WorkBuddy 风格：
+ * 纯白画布 + 浅灰侧栏、薄荷青绿单色点缀、近黑大标题、大圆角胶囊控件。
+ */
+@theme {
+  --color-brand-50: #eefaf6;
+  --color-brand-100: #d7f3e9;
+  --color-brand-200: #aee9d6;
+  --color-brand-300: #7bdabf;
+  --color-brand-400: #4bc7a6;
+  --color-brand-500: #28b894; /* WorkBuddy mint */
+  --color-brand-600: #1d9e7e;
+  --color-brand-700: #187f66;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-ink-400: #9aa3b2;
+  --color-ink-500: #6b7686;
+  --color-ink-600: #4d5866;
+  --color-ink-900: #101418;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: #f6f7f9; /* sidebar / soft panels */
+
+  --font-sans: ui-sans-serif, -apple-system, "PingFang SC", "HarmonyOS Sans SC",
+    "Microsoft YaHei", "Segoe UI", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-brand-100);
+}
+
+/* WorkBuddy 式克制滚动条 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d8dde5 transparent;
 }

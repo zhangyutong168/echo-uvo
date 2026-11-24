@@ -212,17 +212,17 @@ export default function AnalyzeClient() {
   const pct = progress && progress.total > 0 ? Math.round((progress.done / progress.total) * 100) : 0;
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="text-2xl font-bold">新建分析</h1>
-      <p className="mt-2 text-sm text-gray-500">
+    <div className="mx-auto max-w-3xl px-6 py-12 lg:px-10">
+      <h1 className="text-2xl font-bold tracking-tight text-ink-900">新建分析</h1>
+      <p className="mt-2 text-sm text-ink-500">
         上传 CSV（应用商店评论导出、客服记录等），全程在你的浏览器内完成计算，数据不会上传。
       </p>
 
       {/* Step 1: input */}
-      <div className="mt-8 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="font-semibold">1 · 选择数据</h2>
-        <div className="mt-4 flex flex-wrap items-center gap-4">
-          <label className="cursor-pointer rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+      <div className="mt-8 rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_6px_24px_-16px_rgba(16,20,24,0.18)]">
+        <h2 className="font-semibold text-ink-900">1 · 选择数据</h2>
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <label className="cursor-pointer rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600">
             <input
               type="file"
               accept=".csv,text/csv"
@@ -240,14 +240,14 @@ export default function AnalyzeClient() {
               setMapping(null);
               setFileName(SAMPLE_NAME);
             }}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50"
+            className="rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-ink-600 transition hover:bg-surface"
           >
             使用内置演示数据（{sampleDatasetCount()} 条仿真评论）
           </button>
         </div>
         {fileName && (
-          <p className="mt-3 text-sm text-gray-600">
-            已选择：<span className="font-medium">{fileName}</span>
+          <p className="mt-3 text-sm text-ink-500">
+            已选择：<span className="font-medium text-ink-900">{fileName}</span>
             {parsed && `（${parsed.rowCount} 行 × ${parsed.headers.length} 列）`}
           </p>
         )}
@@ -255,8 +255,8 @@ export default function AnalyzeClient() {
 
       {/* Step 2: column mapping */}
       {parsed && mapping && (
-        <div className="mt-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="font-semibold">2 · 确认列映射</h2>
+        <div className="mt-4 rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_6px_24px_-16px_rgba(16,20,24,0.18)]">
+          <h2 className="font-semibold text-ink-900">2 · 确认列映射</h2>
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <MappingSelect
               label="评论内容（必选）"
@@ -290,9 +290,9 @@ export default function AnalyzeClient() {
       )}
 
       {/* Step 3: run */}
-      <div className="mt-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="font-semibold">3 · 运行分析</h2>
-        <p className="mt-2 text-sm text-gray-500">
+      <div className="mt-4 rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_6px_24px_-16px_rgba(16,20,24,0.18)]">
+        <h2 className="font-semibold text-ink-900">3 · 运行分析</h2>
+        <p className="mt-2 text-sm text-ink-500">
           {hasKey
             ? "检测到 LLM key：将自动生成主题命名、痛点归纳与周报。"
             : "未配置 LLM key：将使用关键词模式（可在设置中配置后重新分析）。"}
@@ -300,23 +300,23 @@ export default function AnalyzeClient() {
         <button
           onClick={runAnalysis}
           disabled={stage === "running" || stage === "parsing" || (!parsed && !fileName)}
-          className="mt-4 rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-4 rounded-full bg-brand-500 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {stage === "running" ? "分析中…" : "开始分析"}
         </button>
 
         {stage === "running" && progress && (
           <div className="mt-4">
-            <div className="flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center justify-between text-sm text-ink-500">
               <span>
                 {STAGE_LABEL[progress.stage]}
                 {progress.message ? ` · ${progress.message}` : ""}
               </span>
               <span>{pct}%</span>
             </div>
-            <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-100">
+            <div className="mt-1 h-2 overflow-hidden rounded-full bg-surface">
               <div
-                className="h-full rounded-full bg-indigo-500 transition-all"
+                className="h-full rounded-full bg-brand-500 transition-all"
                 style={{ width: `${pct}%` }}
               />
             </div>
@@ -324,7 +324,7 @@ export default function AnalyzeClient() {
         )}
 
         {stage === "done" && result && (
-          <div className="mt-4 rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800">
+          <div className="mt-4 rounded-2xl bg-brand-50 p-4 text-sm text-brand-700">
             <p className="font-medium">分析完成 ✓</p>
             <p className="mt-1">
               {result.kpis.total} 条反馈 → {result.clusters.length} 个主题 ·
@@ -334,7 +334,7 @@ export default function AnalyzeClient() {
             </p>
             <a
               href={`/dashboard/${result.createdAt}`}
-              className="mt-3 inline-block rounded-lg bg-emerald-600 px-4 py-2 font-medium text-white hover:bg-emerald-700"
+              className="mt-3 inline-block rounded-full bg-brand-500 px-5 py-2 font-medium text-white transition hover:bg-brand-600"
             >
               查看 Dashboard →
             </a>
@@ -342,7 +342,7 @@ export default function AnalyzeClient() {
         )}
 
         {error && (
-          <div className="mt-4 rounded-lg bg-red-50 p-4 text-sm text-red-700">{error}</div>
+          <div className="mt-4 rounded-2xl bg-red-50 p-4 text-sm text-red-600">{error}</div>
         )}
       </div>
     </div>
@@ -358,11 +358,11 @@ function MappingSelect(props: {
 }) {
   return (
     <label className="block text-sm">
-      <span className="text-gray-600">{props.label}</span>
+      <span className="text-ink-500">{props.label}</span>
       <select
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 focus:border-indigo-500 focus:outline-none"
+        className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-ink-900 focus:border-brand-400 focus:outline-none"
       >
         {props.allowEmpty && <option value="">（不使用）</option>}
         {props.headers.map((h) => (
